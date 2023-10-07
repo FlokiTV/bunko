@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1696589142921,
+      "tag": "0000_breezy_obadiah_stane",
+      "breakpoints": true
+    }
+  ]
+}
