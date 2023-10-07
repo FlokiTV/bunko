@@ -1,6 +1,6 @@
-# bunko
+# 📚 bunko
 
-Bun first base, hight inspired by pocketbase
+Bun first base, hight inspired on pocketbase
 
 To install dependencies:
 
