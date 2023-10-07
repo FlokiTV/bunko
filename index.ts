@@ -3,9 +3,9 @@ const port = parseInt(process.env.PORT!) || 3000;
 /*
   Setup ws
 */
-import wsServer from "./src/ws";
+import _ws from "./src/ws";
 import { events } from "./events";
-const ws = wsServer(port + 1);
+const ws = _ws(port + 1);
 events(ws);
 app.get("/ws", (c) => {
   return c.json({

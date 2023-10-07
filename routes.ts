@@ -7,8 +7,8 @@ export const routes = (app: Hono) => {
     let result = readUser();
     return c.json(result);
   });
-  app.get("/s", (c) => {
-    let result = insertUser({ fullName: "Flokete" });
+  app.get("/s", async (c) => {
+    let result = await insertUser({ fullName: "Flokete" });
     console.log(result);
     return c.json(result);
   });
