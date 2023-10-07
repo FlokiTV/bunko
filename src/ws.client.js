@@ -18,7 +18,7 @@ const bunko = async (
     error(cb) {
       socket.addEventListener("error", (event) => cb(event));
     },
-    emit(type = "event", data = {}) {
+    send(type = "event", data = {}) {
       socket.send(
         JSON.stringify({
           type,
