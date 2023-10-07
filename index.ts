@@ -1,11 +1,11 @@
 import app from "./src/api";
 const port = parseInt(process.env.PORT!) || 3000;
 // Setup ws response
-const wsServer = ws(port + 1);
-import ws from "./src/ws";
+import wsServer from "./src/ws";
+const ws = wsServer(port + 1);
 app.get("/ws", (c) => {
   return c.json({
-    port: `${wsServer.port}`,
+    port: `${ws.port}`,
   });
 });
 // Client script
@@ -17,6 +17,10 @@ app.get(
 // Setup routes
 import { routes } from "./routes";
 routes(app);
+
+ws.on("hi", (socket: any, data: any) => {
+  console.log(socket, data);
+});
 
 console.log(`rest \thttp://localhost:${port}`);
 
