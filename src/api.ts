@@ -45,7 +45,7 @@ app.get("/api/:schema/schema", async (c) => {
   let schema = c.req.param("schema");
   let response: any = "not found";
   try {
-    let loadedSchema = await loadSchema(schema)
+    let loadedSchema = await loadSchema(schema);
     response = {};
     for (const key in loadedSchema) {
       response[key] = loadedSchema[key].config;
@@ -59,12 +59,26 @@ app.get("/api/:schema", async (c) => {
   let schema = c.req.param("schema");
   let response: any = "not found";
   try {
-    let loadedSchema = await loadSchema(schema)
+    let loadedSchema = await loadSchema(schema);
     const result = db.select().from(loadedSchema).all();
     response = result;
   } catch (error) {
     c.status(404);
   }
+  return c.json(response);
+});
+app.post("/api/:schema", async (c) => {
+  let schema = c.req.param("schema");
+  let body = await c.req.parseBody();
+  console.log(body);
+  let response: any = "not found";
+  // try {
+  //   let loadedSchema = await loadSchema(schema)
+  //    const result = db.insert(loadedSchema).values({}).returning();
+  //   response = result;
+  // } catch (error) {
+  //   c.status(404);
+  // }
   return c.json(response);
 });
 // app.use("*", timing());
