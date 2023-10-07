@@ -20,18 +20,30 @@ const root = process.cwd() + "/schemas";
 //     console.log("file");
 //   }
 // }
+app.use("/api/:schema/*", async (c, next) => {
+  let schema = c.req.param("schema");
+  let file = root + "/" + schema + ".ts";
+  try {
+    const info = await lstat(file);
+    if (!info.isFile()) {
+      c.status(404);
+      return c.text("not found");
+    }
+  } catch (error) {
+    c.status(404);
+    return c.json(error);
+  }
+  await next();
+});
 app.get("/api/:schema/schema", async (c) => {
   let schema = c.req.param("schema");
   let file = root + "/" + schema + ".ts";
   let response: any = "not found";
   try {
-    const info = await lstat(file);
-    if (info.isFile()) {
-      let s = (await import(file)).default;
-      response = {};
-      for (const key in s) {
-        response[key] = s[key].config;
-      }
+    let loadedSchema = (await import(file)).default;
+    response = {};
+    for (const key in loadedSchema) {
+      response[key] = loadedSchema[key].config;
     }
   } catch (error) {
     c.status(404);
@@ -43,12 +55,9 @@ app.get("/api/:schema", async (c) => {
   let file = root + "/" + schema + ".ts";
   let response: any = "not found";
   try {
-    const info = await lstat(file);
-    if (info.isFile()) {
-      let loadedSchema = (await import(file)).default;
-      const result = db.select().from(loadedSchema).all();
-      response = result;
-    }
+    let loadedSchema = (await import(file)).default;
+    const result = db.select().from(loadedSchema).all();
+    response = result;
   } catch (error) {
     c.status(404);
   }
