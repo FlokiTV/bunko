@@ -3,6 +3,7 @@ import { logger } from "hono/logger";
 import { cors } from "hono/cors";
 import { etag } from "hono/etag";
 import { lstat } from "fs/promises";
+import { db } from "./db";
 // import { endTime, setMetric, startTime, timing } from "hono/timing";
 
 const app = new Hono();
@@ -31,6 +32,22 @@ app.get("/api/:schema/schema", async (c) => {
       for (const key in s) {
         response[key] = s[key].config;
       }
+    }
+  } catch (error) {
+    c.status(404);
+  }
+  return c.json(response);
+});
+app.get("/api/:schema", async (c) => {
+  let schema = c.req.param("schema");
+  let file = root + "/" + schema + ".ts";
+  let response: any = "not found";
+  try {
+    const info = await lstat(file);
+    if (info.isFile()) {
+      let loadedSchema = (await import(file)).default;
+      const result = db.select().from(loadedSchema).all();
+      response = result;
     }
   } catch (error) {
     c.status(404);

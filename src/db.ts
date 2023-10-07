@@ -6,7 +6,7 @@ import { Database } from "bun:sqlite";
 const __dirname = import.meta.dir + "/../";
 
 const sqlite = new Database(__dirname + "/sqlite.db");
-const db: BunSQLiteDatabase = drizzle(sqlite);
+export const db: BunSQLiteDatabase = drizzle(sqlite);
 
 migrate(db, { migrationsFolder: __dirname + "/drizzle" });
 
