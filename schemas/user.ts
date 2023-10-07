@@ -5,7 +5,6 @@ export const users = sqliteTable("users", {
   fullName: text("full_name"),
   phone: text("phone"),
 });
-
 export type User = typeof users.$inferSelect; // return type when queried
 export type InsertUser = typeof users.$inferInsert; // insert type
 
