@@ -1,4 +1,4 @@
-# 📚 bunko
+# 📚 bunko 文庫
 
 Bun first base, highly inspired by pocketbase
 
