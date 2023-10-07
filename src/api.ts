@@ -35,12 +35,17 @@ app.use("/api/:schema/*", async (c, next) => {
   }
   await next();
 });
+
+const loadSchema = async (schema: string) => {
+  let file = root + "/" + schema + ".ts";
+  let loadedSchema = (await import(file)).default;
+  return loadedSchema;
+};
 app.get("/api/:schema/schema", async (c) => {
   let schema = c.req.param("schema");
-  let file = root + "/" + schema + ".ts";
   let response: any = "not found";
   try {
-    let loadedSchema = (await import(file)).default;
+    let loadedSchema = await loadSchema(schema)
     response = {};
     for (const key in loadedSchema) {
       response[key] = loadedSchema[key].config;
@@ -52,10 +57,9 @@ app.get("/api/:schema/schema", async (c) => {
 });
 app.get("/api/:schema", async (c) => {
   let schema = c.req.param("schema");
-  let file = root + "/" + schema + ".ts";
   let response: any = "not found";
   try {
-    let loadedSchema = (await import(file)).default;
+    let loadedSchema = await loadSchema(schema)
     const result = db.select().from(loadedSchema).all();
     response = result;
   } catch (error) {
