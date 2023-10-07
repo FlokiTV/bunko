@@ -4,7 +4,7 @@ export default {
     schema: "./schemas/*.ts",
     out: "./drizzle",
     dbCredentials: {
-        url: "./squite.db"
+        url: "./sqlite.db"
     }
 } satisfies Config;
 
