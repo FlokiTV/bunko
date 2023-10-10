@@ -41,6 +41,7 @@ const loadSchema = async (schema: string) => {
   let loadedSchema = (await import(file)).default;
   return loadedSchema;
 };
+
 app.get("/api/:schema/schema", async (c) => {
   let schema = c.req.param("schema");
   let response: any = "not found";
@@ -55,6 +56,23 @@ app.get("/api/:schema/schema", async (c) => {
   }
   return c.json(response);
 });
+/*
+  CRUD
+*/
+app.post("/api/:schema", async (c) => {
+  let schema = c.req.param("schema");
+  let body = await c.req.json();
+  console.log(body);
+  let response: any = "not found";
+  // try {
+  //   let loadedSchema = await loadSchema(schema)
+  //    const result = db.insert(loadedSchema).values({}).returning();
+  //   response = result;
+  // } catch (error) {
+  //   c.status(404);
+  // }
+  return c.json(response);
+});
 app.get("/api/:schema", async (c) => {
   let schema = c.req.param("schema");
   let response: any = "not found";
@@ -67,19 +85,16 @@ app.get("/api/:schema", async (c) => {
   }
   return c.json(response);
 });
-app.post("/api/:schema", async (c) => {
+app.put("/api/:schema/:id", async (c) =>{
   let schema = c.req.param("schema");
-  let body = await c.req.parseBody();
+  let id = c.req.param("id");
+  let body = await c.req.json();
   console.log(body);
-  let response: any = "not found";
-  // try {
-  //   let loadedSchema = await loadSchema(schema)
-  //    const result = db.insert(loadedSchema).values({}).returning();
-  //   response = result;
-  // } catch (error) {
-  //   c.status(404);
-  // }
-  return c.json(response);
+});
+app.delete("/api/:schema/:id", async (c) =>{
+  let schema = c.req.param("schema");
+  let id = c.req.param("id");
+
 });
 // app.use("*", timing());
 // app.use("*", async (_, next) => {
